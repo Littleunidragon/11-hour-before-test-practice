@@ -8,7 +8,7 @@ func TestSmallest(t *testing.T) {
 		n    int
 		want int
 	}{
-		{[]int{1, 2, 3, 4}, 1, 1},
+		{[]int{1, 2, 3, 4}, 1, 4},
 		{[]int{67, 23, 45, 799, 0}, 3, 45},
 	} {
 		if smallest(tc.s, tc.n) != tc.want {

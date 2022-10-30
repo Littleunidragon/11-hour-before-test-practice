@@ -2,13 +2,13 @@ package main
 
 import "fmt"
 
-func partition(s []int, l, r int) (int, int) {
+func partition(s []int, l, r int) (int, int) { //biggest
 	p := s[r/2]
 	for l <= r {
-		for s[l] < p {
+		for s[l] > p { //>
 			l++
 		}
-		for s[r] > p {
+		for s[r] < p { //<
 			r--
 		}
 		if l <= r {

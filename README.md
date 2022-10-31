@@ -24,3 +24,25 @@ Jaroslavs Samcuks9:12 AM
 https://goplay.tools/snippet/Y4Ge1zvAohr
 Andrej Ceremnih9:26 AM
 https://goplay.tools/snippet/eRBoAYQ6ohp
+
+Anastasija Voropajeva:
+10.06  - https://goplay.tools/snippet/lXRsx2fDao7
+
+29.09 - https://goplay.tools/snippet/v6CvRaepvWS
+
+10.10 - https://goplay.tools/snippet/l3WOeRvExO6
+
+Jaroslavs Samčuks:
+func split(n int, tail []int, f func([]int)) {
+  if n == 0 { f(tail); return }
+  for i := 1; i <= n; i++ {
+    if len(tail) == 0 || tail[len(tail)-1] <= i {
+      split(n-i, append(tail, i), f)
+    }
+  }
+}
+
+я ожидаю примерно такое решение. и тот факт, что ты встроила внутренний if в рекурсию - оч красиво
+
+Anastasija Voropajeva:
+У меня эта ссылка ведёт на filterDigits 🤔

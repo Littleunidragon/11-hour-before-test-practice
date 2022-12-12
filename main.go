@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 )
-
+// max heap || sort in decreasing order && check if parent > child in k, update indexes in structs|| other slices for indexes
 func IsHeap(s []int) bool {
 	if len(s) == 0 {
 		return true

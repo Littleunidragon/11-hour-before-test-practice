@@ -1,0 +1,50 @@
+package main
+
+import (
+	"log"
+	"math"
+	"image/color"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2"
+)
+
+const (
+	screenWidth  = 640
+	screenHeight = 480
+	radius = 30
+)
+
+type game struct{
+	b *ball
+}
+
+type point struct {
+	x, y float64
+}
+type ball struct {
+	pos point
+	angle float64
+	color color.RGBA
+}
+
+func (g *game) Rotate(angle float64) {
+	g.b.pos.x = g.b.pos.x * math.Cos(angle) - g.b.pos.y * math.Sin(angle)
+	g.b.pos.y = g.b.pos.x * math.Sin(angle) + g.b.pos.y * math.Cos(angle)
+}
+
+func (g *game) Layout(outWidth, outHeight int) (w, h int) { return screenWidth, screenHeight }
+func (g *game) Update() error                             { 
+	var angle float64
+	angle += math.Pi / 6
+	g.Rotate(angle)
+	return nil }
+func (g *game) Draw(screen *ebiten.Image)                 {
+	ebitenutil.DrawCircle(screen, g.b.pos.x +float64(screenWidth/2), g.b.pos.y + float64(screenHeight/2), radius, color.White )
+}
+
+func main() {
+	ebiten.SetWindowSize(screenWidth, screenHeight)
+	if err := ebiten.RunGame(&game{}); err != nil {
+		log.Fatal(err)
+	}
+}

@@ -1,0 +1,59 @@
+package main
+
+import (
+	"log"
+	"image/color"
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+)
+
+const (
+	screenWidth  = 640
+	screenHeight = 480
+	wallX = 64
+	wallY = 48
+
+)
+var (
+		worldmap = [10][10]int{
+		{1,1,1,1,1,1,1,1,1,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,1,1,1,1,1,1,1,1,1},
+	}
+)
+
+
+type game struct{}
+
+func mapReader(screen *ebiten.Image){
+	var wallPosx, wallPosy float64
+for i := 0; i < 10; i++ {
+	wallPosy+=48
+	for j := 0; j < 10; j++{
+		wallPosx+=64
+		if worldmap[i][j] == 1{
+			ebitenutil.DrawRect(screen, wallPosx, wallPosy, wallX,wallY, color.RGBA{255, 255, 250, 255})
+		}
+	}
+}
+}
+
+func (*game) Layout(outWidth, outHeight int) (w, h int) { return screenWidth, screenHeight }
+func (*game) Update() error                             { return nil }
+func (*game) Draw(screen *ebiten.Image)                 {
+	screen.Fill(color.RGBA{230, 230, 250, 255})
+}
+
+func main() {
+	ebiten.SetWindowSize(screenWidth, screenHeight)
+	if err := ebiten.RunGame(&game{}); err != nil {
+		log.Fatal(err)
+	}
+}

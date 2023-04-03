@@ -1,0 +1,88 @@
+package main
+
+
+import (
+	"log"
+	"image/color"
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+)
+
+const (
+	screenWidth  = 640
+	screenHeight = 480
+	wallX = 64
+	wallY = 48
+
+)
+var (
+		worldmap = [10][10]int{
+		{1,1,1,1,1,1,1,1,1,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,0,2,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,3,0,0,0,0,1},
+		{1,0,0,0,0,0,2,0,0,1},
+		{1,0,0,0,0,0,0,0,0,1},
+		{1,0,2,0,0,0,0,0,0,1},
+		{1,1,1,1,1,1,1,1,1,1},
+	}
+)
+
+
+type Coord struct {
+	x, y float64
+}
+
+type player struct {
+	pos Coord
+	vel Coord
+	color color.RGBA
+}
+
+type game struct{}
+
+func mapReader(screen *ebiten.Image){
+	for i  := range worldmap {
+		for j := range worldmap[i] {
+			if worldmap[i][j] == 1 {
+				ebitenutil.DrawRect(screen, float64(wallX*j)  , float64(wallY * i), wallX,wallY, color.RGBA{0, 255, 0, 255})				
+			}
+			if worldmap[i][j] == 2 {
+				ebitenutil.DrawRect(screen, float64(wallX*j)  , float64(wallY * i), wallX,wallY, color.RGBA{0, 0, 0, 255})				
+			}
+		}
+	}
+}
+func (p *player)spawn() {
+	for i  := range worldmap {
+		for j := range worldmap[i] {
+			if worldmap[i][j] == 3 {
+				p.pos.x = float64(wallX*j)
+				p.pos.y = float64(wallY*i) 			
+			}
+			}
+		}
+	}
+
+func (p *player)movePlayer(screen *ebiten.Image) {
+	p.spawn()
+	ebitenutil.DrawCircle(screen, p.pos.x, p.pos.y, 20, color.RGBA{255,0,0,255})
+
+}
+func (*game) Layout(outWidth, outHeight int) (w, h int) { return screenWidth, screenHeight }
+func (*game) Update() error                             { return nil }
+func (*game) Draw(screen *ebiten.Image)                 {
+	//screen.Fill(color.RGBA{230, 230, 250, 255})
+	screen.Fill(color.RGBA{255, 0, 0, 255})
+	mapReader(screen)
+
+}
+
+func main() {
+	ebiten.SetWindowSize(screenWidth, screenHeight)
+	if err := ebiten.RunGame(&game{}); err != nil {
+		log.Fatal(err)
+	}
+}

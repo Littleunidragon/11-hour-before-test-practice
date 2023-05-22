@@ -1,0 +1,47 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+	"sort"
+)
+
+type (
+	uni struct {
+		Name string `json:"name"`
+	}
+	all struct {
+		a []uni `json:""`
+	}
+)
+
+func main() {
+	url := "http://universities.hipolabs.com/search?name=latvia"
+	client := http.Client{
+		Timeout: time.Second * 2, // Timeout after 2 seconds
+	}
+	res, err := client.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if res.Body != nil {
+		defer res.Body.Close()
+	}
+
+	dec := json.NewDecoder(res.Body)
+	unun := all{}
+	if err := dec.Decode(&unun.a); err != nil {
+		log.Fatal(err)
+	}
+	var s []string
+	for i := range unun.a {
+		s = append(s, unun.a[i].Name)
+	}
+	sort.Strings(s)
+	for _, p := range s {
+		fmt.Println(p)
+	}
+}
